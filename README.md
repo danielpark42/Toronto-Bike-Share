@@ -32,9 +32,17 @@ I will also be using this data to ~~convince~~ educate my friends and family abo
 - **User_Type**            User type; membership detail or casual rider
 
 
+## Methodology
 
+### How do you automate the importing of data into a database
+For this project there are 53 files to import into PostgreSQL, and that would be very time consuming process.
+The plan is to create a python script to iteratively import all of the csv files in a folder.
 
-
+### How do you get a list of all the file names in a folder?
 'CTRL + A' to select all files in the folder, and then 'ALT + SHIFT + right-click', then select 'copy as path'
 Paste the path to an empty spreadsheet to get a list of all the file names
+
+### Creating the script!
+Using Visual Studio Code, we will create a *For-Loop* to iterate through the files in the folder.
+Passwords and filespath names will not be included for privacy/security reasons.
 
