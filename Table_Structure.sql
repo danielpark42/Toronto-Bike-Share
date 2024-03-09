@@ -21,3 +21,10 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.bikeshare
     OWNER to postgres;
+
+
+-- Granting access so python script can run
+grant all privileges on database "Toronto Bike Share" to postgres
+grant all privileges on all tables in schema public to postgres
+grant usage on schema public to postgres
+grant usage on all sequences in schema public to postgres
