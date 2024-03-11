@@ -6,10 +6,10 @@ import os
 # Connect to PostgreSQL
 conn = psycopg2.connect(
     dbname="Toronto Bike Share",
-    user="postgres",
+    user="user_name",
     password="password",
-    host="localhost",
-    port="5432"
+    host="host_name",
+    port="port_number"
 )
 cursor = conn.cursor()
 
