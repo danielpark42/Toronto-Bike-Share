@@ -5,7 +5,7 @@ SELECT
 	COUNT(trip_id) AS Number_Of_Trips
 FROM
 	bikeshare
-GROUP BY 1, 2
+GROUP BY 1, 2;
 
   
 -- Duration of trips per month, by year
@@ -15,7 +15,7 @@ SELECT
 	COUNT(trip_duration) AS total_trip_duration
 FROM
 	bikeshare
-GROUP BY 1, 2
+GROUP BY 1, 2;
 
 
 -- Total number of trips by day of week for the year
@@ -111,5 +111,71 @@ SELECT
 FROM bikeshare
 GROUP BY EXTRACT(YEAR FROM start_time);
 
+
+-- Number of trips by day of month per year
+SELECT
+    EXTRACT(YEAR FROM start_time) AS year,
+    EXTRACT(DAY FROM start_time) AS day_of_month,
+    COUNT(trip_id) AS total_trips
+FROM bikeshare
+GROUP BY EXTRACT(YEAR FROM start_time), EXTRACT(DAY FROM start_time)
+ORDER BY year, day_of_month;
+
+-- Total duration of trips by day of month per year
+SELECT
+    EXTRACT(YEAR FROM start_time) AS year,
+    EXTRACT(DAY FROM start_time) AS day_of_month,
+    SUM(trip_duration) AS total_duration
+FROM bikeshare
+GROUP BY EXTRACT(YEAR FROM start_time), EXTRACT(DAY FROM start_time)
+ORDER BY year, day_of_month;
+
+
+-- Number of trips by hour of day per year
+SELECT
+    EXTRACT(YEAR FROM start_time) AS year,
+    EXTRACT(hour FROM start_time) AS hour_of_day,
+    COUNT(trip_id) AS total_trips
+FROM bikeshare
+GROUP BY EXTRACT(YEAR FROM start_time), EXTRACT(hour FROM start_time)
+ORDER BY year, hour_of_day;
+
+
+-- Total duration of trips by hour of day per year
+SELECT
+    EXTRACT(YEAR FROM start_time) AS year,
+    EXTRACT(hour FROM start_time) AS hour_of_day,
+    SUM(trip_duration) AS total_duration
+FROM bikeshare
+GROUP BY EXTRACT(YEAR FROM start_time), EXTRACT(hour FROM start_time)
+ORDER BY year, hour_of_day;
+
+
+-- Noticed some entries with NULL for end_station_id. Counting these instances: result was 8042 null end_station_id's
+SELECT 
+    COUNT(CASE WHEN start_station_id = 'NULL' THEN 1 END) AS start_station_id_null_count,
+    COUNT(CASE WHEN end_station_id = 'NULL' THEN 1 END) AS end_station_id_null_count
+FROM bikeshare;
+
+
+-- Further investigation yields that where these entries are null, the trip duration is usually 0.
+-- There are 16714 instances where the trip duration = 0 seconds.
+-- The instances where the end_station_id is NULL, there are 
+SELECT *
+FROM bikeshare
+WHERE end_station_id = 'NULL'; --count = 8,042
+
+SELECT count(trip_duration)
+FROM bikeshare
+WHERE trip_duration = 0; --count = 16,714
+
+SELECT * FROM bikeshare
+WHERE end_station_name = 'NULL'; -- count = 820,154
+
+SELECT * FROM bikeshare
+WHERE start_station_name = 'NULL'; -- count = 811,227
+
+select count(*) from bikeshare
+WHERE end_station_name = 'NULL' AND end_station_id = 'NULL' -- count = 8,042
 
 -- 
