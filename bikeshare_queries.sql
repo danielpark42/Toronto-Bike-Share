@@ -178,4 +178,53 @@ WHERE start_station_name = 'NULL'; -- count = 811,227
 select count(*) from bikeshare
 WHERE end_station_name = 'NULL' AND end_station_id = 'NULL' -- count = 8,042
 
--- 
+
+-- Total Number of combinations of all trips taken
+SELECT COUNT(DISTINCT start_station_id || '_' || end_station_id) AS total_combinations
+FROM bikeshare; -- count = 344,414 from station A to station B
+
+
+-- Order combinations by popularity
+SELECT 
+    start_station_id, 
+	start_station_name,
+    end_station_id, 
+	end_station_name,
+    COUNT(*) AS route_count
+FROM bikeshare
+GROUP BY (start_station_id,start_station_name), (end_station_id,end_station_name)
+ORDER BY route_count DESC; -- it seems that there is overwhelming popularity in Tommy Thompson Park, where riders are just going starting and ending at the same station
+
+
+-- How many trips were there and what was the total duration, where the start and end station were the same?
+SELECT 
+    EXTRACT(year FROM start_time) as year,
+	COUNT(trip_id) AS trip_count,
+	SUM(trip_duration) AS total_trip_duration
+FROM bikeshare
+WHERE start_station_id = end_station_id
+GROUP BY EXTRACT(year FROM start_time) 
+ORDER BY year DESC;
+
+
+-- How many trips are A -> B , B -> A
+SELECT
+	b1.start_station_id,
+	b1.start_station_name,
+	b1.end_station_id,
+	b1.end_station_name,
+	b2.start_station_id,
+	b2.start_station_name,
+	b2.end_station_id,
+	b2.end_station_name
+	
+FROM
+	bikeshare b1
+JOIN
+	bikeshare b2
+ON
+	b1.start_station_id = b2.end_station_id
+WHERE
+	b1.end_station_id = b2.start_station_id
+	AND
+	b1.start_station_id <> b1.end_station_id
