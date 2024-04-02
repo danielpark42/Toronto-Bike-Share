@@ -14,7 +14,7 @@ conn = psycopg2.connect(
 cursor = conn.cursor()
 
 # Read the spreadsheet
-csv_file_path = 'Toronto_Bikeshare_Ridership_FileNameList.csv'  # Change this to your spreadsheet file path
+csv_file_path = 'Toronto_Bikeshare_Ridership_FileNameList.csv'
 df = pd.read_csv(csv_file_path,index_col = 0, header = None)
 
 # password for psql to import into database
